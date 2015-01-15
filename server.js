@@ -1,4 +1,3 @@
-var sync = require('synchronize');
 var mysql = require('mysql');
 var temp = '';
 var connection_db = mysql.createConnection({
@@ -15,14 +14,26 @@ var indexs = {
 	x564050xxxx:1
 };
 
-var id_all = ['56for','67adf'];
-var points = [];
+var id_women = ['56for','67adf']; // max --> min
+var points = []; // max --> min
+var images = [[],[]];
 
-//var io = require('socket.io').listen(SOCKETIO_PORT);
-//io.sockets.on('connection', function() {
-//	console.log('Connected : ' + socket.id);
-//	io.socket.emit();
-//});
+var port = 1234
+var io = require('socket.io').listen(port);
+io.sockets.on('connection', function() {
+	console.log('Connected : ' + socket.id);
+	io.socket.emit();
+});
+
+//var Elo = require('arpad');
+//
+//var elo = new Elo();
+//var alice = 1600;
+//var bob = 1300;
+//var new_alice = elo.newRatingIfWon(alice, bob); // 1605
+//var new_bob = elo.newRatingIfLost(alice, bob); // 1605
+//console.log('new alice = ' + new_alice);
+//console.log('new bob = ' + new_bob);
 
 function insertValue(data) {
 	//var data  = {id:3, name: 'test', point:20};
