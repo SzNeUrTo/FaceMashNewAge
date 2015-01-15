@@ -22,8 +22,8 @@ function getValueFormID(id) {
 	});
 }
 
-function updateValueAtID(id) {
-	var query = connection.query('update table1 set point=744  where id'+id, function(err, result) {
+function updateValueAtID(id, point) {
+	var query = connection.query('update table1 set point='+ point +'where id'+id, function(err, result) {
 		console.log(err);
 		console.log(result);
 	});
