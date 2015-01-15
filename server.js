@@ -31,3 +31,5 @@ function updateValueAtID(id, point) {
 
 //console.log(query.sql);
 //insertValue()
+insertValue({id:3, point:20 name:'test test2'});
+getValueFormID(3);
