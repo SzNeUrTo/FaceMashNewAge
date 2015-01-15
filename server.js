@@ -19,18 +19,20 @@ io.sockets.on('connection', function() {
 	io.socket.emit();
 });
 
-//var Elo = require('arpad');
-//
-//var elo = new Elo();
-//var alice = 1600;
-//var bob = 1300;
-//var new_alice = elo.newRatingIfWon(alice, bob); // 1605
-//var new_bob = elo.newRatingIfLost(alice, bob); // 1605
-//console.log('new alice = ' + new_alice);
-//console.log('new bob = ' + new_bob);
+var Elo = require('arpad');
+var elo = new Elo();
+function winElo(winner, loser) {
+	winner = elo.newRatingIfWon(winner,loser)
+	return winner;
+}
+
+function loseElo(winner, loser) {
+	loser = elo.newRatingIfLost(winner,loser)
+	return loser;
+}
 
 function insertValue(data) {
-	//var data  = {id:3, name: 'test', point:20};
+	//var data  = {id:572060xxx, elo:1234, win:1, lose:100};
 	var query = connection_db.query('INSERT INTO table1 SET ?', data, function(err, result) {
 		console.log(err);
 		console.log(result);
@@ -55,18 +57,17 @@ function updateValueAtID(id, point) {
 	});
 }
 
-console.log(id_women);
-console.log(points);
+//console.log(id_women);
+//console.log(points);
 for (var i = 0; i < id_women.length; i++) {
-
 	var id = id_women[i];
 	getValueFormID(id, function(err, callback) {
 		if (err) {
 			console.error('Error!', err);
 		} else {
 			if (callback) {
-				console.log(callback[0].point);
-				console.log(i);
+				//console.log(callback[0].point);
+				//console.log(i);
 				var point = callback[0].point;
 				points[points.length] = point;
 				
@@ -78,6 +79,6 @@ for (var i = 0; i < id_women.length; i++) {
 
 
 setTimeout(function() {
-	console.log(points)
-	console.log(points.length);
-},3500);
+	console.log('points[] = ' + points)
+	console.log('points.length = ' + points.length);
+},2);
