@@ -7,8 +7,8 @@ var connection = mysql.createConnection({
 });
 connection.connect(function(err) {});
 
-function insertValue() {
-	var data  = {id:3, point: 20};
+function insertValue(data) {
+	//var data  = {id:3, point: 20};
 	var query = connection.query('INSERT INTO table1 SET ?', data, function(err, result) {
 		console.log(err);
 		console.log(result);
