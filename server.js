@@ -2,21 +2,26 @@ var mysql = require('mysql');
 var temp = '';
 var connection_db = mysql.createConnection({
 	host     : 'localhost',
-	user     : 'root',
-	password : 'toor',
-	database : 'test_with_nodejs'
+	user     : 'root', // change database
+	password : 'toor', // change database
+	database : 'test_with_nodejs' // change database
 });
 connection_db.connect(function(err) {});
 
 var id_women = ['3','3']; // max --> min
 var points = []; // max --> min
 var images = [[],[]];
+var names = {
+	'572050xxxx':'test test'
+}
 
 var port = 1234
 var io = require('socket.io').listen(port);
 io.sockets.on('connection', function() {
 	console.log('Connected : ' + socket.id);
-	io.socket.emit();
+	io.socket.emit(); // prints id_women names
+	// socket on  lisener on  emit return quickly (click)
+	// ---> updateDatabase... (id1, id2 --> winner loser)
 });
 
 var Elo = require('arpad');
@@ -57,6 +62,18 @@ function updateValueAtID(id, point) {
 	});
 }
 
+function sortPoints() {
+	for (var i = 0; i < points.length; i++) {
+		// edit here
+		// swap id
+	}
+}
+
+function randomImageName(id) {
+	// coding Here...
+	return '';
+}
+
 //console.log(id_women);
 //console.log(points);
 for (var i = 0; i < id_women.length; i++) {
@@ -75,8 +92,6 @@ for (var i = 0; i < id_women.length; i++) {
 		}
 	});
 }
-
-
 
 setTimeout(function() {
 	console.log('points[] = ' + points)
