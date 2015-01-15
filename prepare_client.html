@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+        <script></script>
+        <body>
+
+        <br>
+        <img id="img1" src="1.jpg" />
+        <br>
+        <button onclick="select1()">Choice 1</button>
+        <br>
+        <img id="img2" src="2.jpg" />
+        <br>
+        <button onclick="select2()">Choice 2</button>
+
+        <button onclick="swapImage()">Swap Image</button>
+        <p id="demo"></p>
+
+        <script>
+                var id1 = 'xx';
+                var id2 = 'yy';
+                function select1() {
+                    document.getElementById("demo").innerHTML = "SlectImage1";
+                    //emit
+                    // win(id1,id2) --> id1 win id2
+                    //set click = true
+                }
+
+                function select2() {
+                    document.getElementById("demo").innerHTML = "SlectImage2";
+                    //emit id image
+                    // win(id2,id1) --> id1 win id2
+                    // set click = true
+                }
+
+                function swapImage() {
+                        // socket on change Image after click
+
+                        // if click = true change image (this code is in socket)
+                        var img1 = document.getElementById("img1");
+                        img1.src="./2.jpg";
+
+                        var img2 = document.getElementById("img2");
+                        img2.src="./1.jpg";
+
+                        document.getElementById("demo").innerHTML = "swapImage()";
+                        //set click = false
+                }
+        </script>
+        </body>
+</html>
