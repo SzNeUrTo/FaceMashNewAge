@@ -8,13 +8,7 @@ var connection_db = mysql.createConnection({
 });
 connection_db.connect(function(err) {});
 
-
-var indexs = {
-	'561050xxxx':0,
-	x564050xxxx:1
-};
-
-var id_women = ['56for','67adf']; // max --> min
+var id_women = ['3','3']; // max --> min
 var points = []; // max --> min
 var images = [[],[]];
 
@@ -61,12 +55,29 @@ function updateValueAtID(id, point) {
 	});
 }
 
-id = 3
-getValueFormID(id, function(err, callback) {
-	if (err) {
-		console.error('Error!', err);
-	} else {
-		console.log(callback);
-		id = callback;
-	}
-});
+console.log(id_women);
+console.log(points);
+for (var i = 0; i < id_women.length; i++) {
+
+	var id = id_women[i];
+	getValueFormID(id, function(err, callback) {
+		if (err) {
+			console.error('Error!', err);
+		} else {
+			if (callback) {
+				console.log(callback[0].point);
+				console.log(i);
+				var point = callback[0].point;
+				points[points.length] = point;
+				
+			}
+		}
+	});
+}
+
+
+
+setTimeout(function() {
+	console.log(points)
+	console.log(points.length);
+},3500);
