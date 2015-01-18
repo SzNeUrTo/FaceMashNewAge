@@ -8,24 +8,32 @@ var connection_db = mysql.createConnection({
 });
 connection_db.connect(function(err) {});
 
-var id_women = ['3','3']; // max --> min
-var points = []; // max --> min
+var id_women = []; // max --> min (sort)
+var pointsElo = []; // max --> min (sort)
 var images = [[],[]];
 var names = {
 	'572050xxxx':'test test'
 }
 
+var indexImages = {
+	'572050xxxx':0,
+	'572050xxxx':1,
+	'572050xxxx':-1, // InActive
+}
+
 var port = 1234
 var io = require('socket.io').listen(port);
-io.sockets.on('connection', function() {
+io.sockets.on('connection', function(socket) {
 	console.log('Connected : ' + socket.id);
-	io.socket.emit(); // prints id_women names
+	var match = randomMatch();
+	io.socket.emit('Connected', match); // prints id_women names
 	// socket on  lisener on  emit return quickly (click)
 	// ---> updateDatabase... (id1, id2 --> winner loser)
 });
 
 var Elo = require('arpad');
 var elo = new Elo();
+
 function winElo(winner, loser) {
 	winner = elo.newRatingIfWon(winner,loser)
 	return winner;
@@ -46,7 +54,7 @@ function insertValue(data) {
 }
 
 function getValueFormID(id, callback) {
-	var query = connection_db.query('select * from table1 where id='+id, function(err, result) {
+	var query = connection_db.query('select * from table1 where id=' + id, function(err, result) {
 		if (err) {
 			callback(err);
 		} else {
@@ -55,27 +63,41 @@ function getValueFormID(id, callback) {
 	});
 }
 
-function updateValueAtID(id, point) {
-	var query = connection_db.query('update table1 set point='+ point +'where id'+id, function(err, result) {
-		console.log(err);
-		console.log(result);
+function updateValueAtID(id, eloPoint, win, lose) {
+	var query = connection_db.query('update table1 set elo=' + eloPoint + ',win=' + win + ',lose=' + lose + 'where id' + id, function(err, result) {
 	});
 }
 
-function sortPoints() {
-	for (var i = 0; i < points.length; i++) {
-		// edit here
-		// swap id
+function sortpointsElo() { // BubbleSort
+	for (var i = 0; i < pointsElo.length; i++) {
+		for (var j = 0; j < pointsElo.length - 1; j++) {
+			if (i != j) {
+				if (pointsElo[j] < pointsElo[j+1]) {
+					var temp = pointsElo[j];
+					pointsElo[j] = pointsElo[j+1];
+					pointsElo[j+1] = temp;
+
+					temp = id_women[j];
+					id_women[j] = id_women[j+1];
+					id_women[j+1] = temp;
+				}
+			}
+		}
 	}
 }
 
-function randomImageName(id) {
-	// coding Here...
-	return '';
+function randomImageNameIndex(id_index) {
+	return images[Math.floor(Math.random() * images.length)];
+}
+
+function randomMatch() {
+	var match 
+	return match;;
+	
 }
 
 //console.log(id_women);
-//console.log(points);
+//console.log(pointsElo);
 for (var i = 0; i < id_women.length; i++) {
 	var id = id_women[i];
 	getValueFormID(id, function(err, callback) {
@@ -86,7 +108,7 @@ for (var i = 0; i < id_women.length; i++) {
 				//console.log(callback[0].point);
 				//console.log(i);
 				var point = callback[0].point;
-				points[points.length] = point;
+				pointsElo[pointsElo.length] = point;
 				
 			}
 		}
@@ -94,6 +116,6 @@ for (var i = 0; i < id_women.length; i++) {
 }
 
 setTimeout(function() {
-	console.log('points[] = ' + points)
-	console.log('points.length = ' + points.length);
+	console.log('pointsElo[] = ' + pointsElo)
+	console.log('pointsElo.length = ' + pointsElo.length);
 },2);
