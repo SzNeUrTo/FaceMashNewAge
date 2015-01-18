@@ -10,15 +10,9 @@ connection_db.connect(function(err) {});
 
 var id_women = []; // max --> min (sort)
 var pointsElo = []; // max --> min (sort)
-var images = [[],[]];
+var images = [0, 3];
 var names = {
 	'572050xxxx':'test test'
-}
-
-var indexImages = {
-	'572050xxxx':0,
-	'572050xxxx':1,
-	'572050xxxx':-1, // InActive
 }
 
 var port = 1234
@@ -27,6 +21,7 @@ io.sockets.on('connection', function(socket) {
 	console.log('Connected : ' + socket.id);
 	var match = randomMatch();
 	io.socket.emit('Connected', match); // prints id_women names
+	// io.socket.emit('Ranking',
 
 	sockets.on('Update', function(winnerID, loserID) {
 		var winnerIndexID = id_women.indexOf(winnerID);
@@ -38,8 +33,28 @@ io.sockets.on('connection', function(socket) {
 		updateDBValueAtID(winner, winnerID, 0, 0);
 		updateDBValueAtID(loser, loserID, 0, 0);
 		sortpointsElo();
-		io.socket.emit('NewMatch', match); // prints id_women names
+		match = randomMatch();
+		io.sockets.emit('NewMatch', match); // prints id_women names
+		//io.sockets.socket(socket.id).emit('NewMatch', match); // prints id_women name
+		// io.socket.emit('Ranking',
 	});
+
+	// I want to test this code
+	//sockets.on('Update', function(socket, winnerID, loserID) {
+	//	var winnerIndexID = id_women.indexOf(winnerID);
+	//	var loserIndexID = id_women.indexOf(loserID);
+	//	var winner = pointsElo[winnerIndexID];
+	//	var loser = pointsElo[loserIndexID];
+	//	winner = winElo(winner, loser);
+	//	loser = loseElo(winner, loser);
+	//	updateDBValueAtID(winner, winnerID, 0, 0);
+	//	updateDBValueAtID(loser, loserID, 0, 0);
+	//	sortpointsElo();
+	//	//io.sockets.emit('NewMatch', match); // prints id_women names
+	//	io.sockets.socket(socket.id).emit('NewMatch', match); // prints id_women name
+	// 	io.socket.emit('Ranking',
+	//});
+	// I want to test this code
 });
 
 var Elo = require('arpad');
@@ -91,14 +106,19 @@ function sortpointsElo() { // BubbleSort
 					temp = id_women[j];
 					id_women[j] = id_women[j+1];
 					id_women[j+1] = temp;
+
+					temp = images[j];
+					images[j] = images[j+1];
+					images[j+1] = temp;
 				}
 			}
 		}
 	}
 }
 
-function randomImageNameIndex(id_index) {
-	return images[Math.floor(Math.random() * images.length)];
+function randomImageSuffixName(id) {
+	//return images[Math.floor(Math.random() * images.length)];
+	return Math.floor(Math.random() * images[id]);
 }
 
 function randomMatch() {
