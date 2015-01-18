@@ -59,9 +59,7 @@ var id_women = [
 	'5711401289']; // max --> min (sort)
 
 var pointsElo = []; // max --> min (sort)
-var images = [
-
-]
+var images = [0,3,3,3,3,3,3,3,0,2,2,0,3,2,3,3,2,0,3,2,0,3,3,0,0,1,2,3,3,3,3,3,2,3,3,2,3,3,3,3,0,0,0,0,0,0,0,0];
 var names = {
 	'5410101529':'ทันทิรา ชัยยะ',
 	'5410400020':'มัณฑนา จาดสอน',
@@ -214,14 +212,50 @@ function sortpointsElo() { // BubbleSort
 	}
 }
 
-function randomImageSuffixName(id) {
+function randomImageSuffixName(index) {
 	//return images[Math.floor(Math.random() * images.length)];
-	return Math.floor(Math.random() * images[id]);
+	return Math.floor(Math.random() * images[index]);
 }
 
 function randomMatch() {
-	var match 
-	return match;;
+	var idWoman1 = -1, idWoman2 = -1, imagePathWoman1, imagePathWoman2;
+	var indexWoman1 = -1, indexWoman2 = -1;
+	while (indexWoman1 < 0) {
+		indexWoman1 = Math.floor(Math.random() * id_women.length);
+		if (images[indexWoman1] != 0) {
+			break;
+		}
+		else {
+			indexWoman1 = -1;
+		}
+	}
+
+	while (indexWoman2 < 0) {
+		indexWoman2 = Math.floor(Math.random() * id_women.length);
+		if (images[indexWoman2] != 0 && indexWoman1 != indexWoman2) {
+			break;
+		}
+		else {
+			indexWoman2 = -1;
+		}
+	}
+
+	idWoman1 = id_women[indexWoman1];
+	idWoman2 = id_women[indexWoman2];
+
+	var nameWoman1 = names[idWoman1];
+	var nameWoman2 = names[idWoman2];
+
+	imagePathWoman1 = './images/' + idWoman1 + randomImageSuffixName(indexWoman1);
+	imagePathWoman2 = './images/' + idWoman2 + randomImageSuffixName(indexWoman2);
+
+
+
+	var woman1 = {id:idWoman1, name:nameWoman1, path:imagePathWoman1}
+	var woman2 = {id:idWoman2, name:nameWoman2, path:imagePathWoman2}
+
+	match = [woman1, woman2];
+	return match;
 	
 }
 
