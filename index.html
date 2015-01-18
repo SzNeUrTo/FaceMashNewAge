@@ -26,18 +26,22 @@
 		function select1() {
 			document.getElementById("selected").innerHTML = "SlectImage1";
 			click = true;
-			socket.emit('Update', id2 , id1);
+			console.log('select1');
+			socket.emit('UpdateValue', id2, id1);
 		}
 
 		function select2() {
 			document.getElementById("selected").innerHTML = "SlectImage2";
 			click = true;
-			socket.emit('Update', id2 , id1);
+			console.log('select2');
+			socket.emit('UpdateValue', id2, id1);
 		}
 
 		socket.on('connect', function() {
+			click = true;
 			socket.on('NewMatch', function(match) {
-				if (click = true) {
+				if (click) {
+					console.log('NewMatch');
 					var woman1 = match[0];
 					var woman2 = match[1];
 					id1 = woman1.id;

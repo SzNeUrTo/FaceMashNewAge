@@ -116,10 +116,10 @@ var io = require('socket.io').listen(port);
 io.sockets.on('connection', function(socket) {
 	console.log('Connected : ' + socket.id);
 	var match = randomMatch();
-	io.socket.emit('Connected', match); // prints id_women names
-	// io.socket.emit('Ranking',
+	io.sockets.emit('NewMatch', match); // prints id_women names
+	// io.sockets.emit('Ranking',
 
-	sockets.on('Update', function(winnerID, loserID) {
+	io.sockets.on('UpdateValue', function(winnerID, loserID) {
 		var winnerIndexID = id_women.indexOf(winnerID);
 		var loserIndexID = id_women.indexOf(loserID);
 		var winner = pointsElo[winnerIndexID];
@@ -131,8 +131,9 @@ io.sockets.on('connection', function(socket) {
 		sortpointsElo();
 		match = randomMatch();
 		io.sockets.emit('NewMatch', match); // prints id_women names
+		console.log(winnerID + ' win ' + loserID);
 		//io.sockets.socket(socket.id).emit('NewMatch', match); // prints id_women name
-		// io.socket.emit('Ranking',
+		// io.sockets.emit('Ranking',
 	});
 
 	// I want to test this code
@@ -167,12 +168,18 @@ function loseElo(winner, loser) {
 }
 
 function insertValue(data) {
-	//var data  = {id:572060xxx, elo:1234, win:1, lose:100};
-	var query = connection_db.query('INSERT INTO table1 SET ?', data, function(err, result) {
-		console.log(err);
-		console.log(result);
+	var senddata  = {id:data[0], elo:data[1], win:0, lose:0};
+	console.log('senddata id : ' + senddata.id);
+
+	setTimeout(function() {
+
+	var query = connection_db.query('INSERT INTO table1 SET ?', senddata, function(err, result) {
+		//console.log(err);
+		//console.log(result);
 		temp = result;
 	});
+
+	},20);
 }
 
 function getValueFormID(id, callback) {
@@ -214,7 +221,11 @@ function sortpointsElo() { // BubbleSort
 
 function randomImageSuffixName(index) {
 	//return images[Math.floor(Math.random() * images.length)];
-	return Math.floor(Math.random() * images[index]);
+	var suffix = Math.floor(Math.random() * images[index]);
+	if (suffix < 10)
+		suffix = '0' + suffix;
+	return '_' + suffix + '.jpg';
+		
 }
 
 function randomMatch() {
@@ -259,22 +270,30 @@ function randomMatch() {
 	
 }
 
+// =================USE========================
 // ============================================
+//for (var i = 0; i < id_women.length; i++) {
+//	var id = id_women[i];
+//	getValueFormID(id, function(err, callback) {
+//		if (err) {
+//			console.error('Error!', err);
+//		} else {
+//			if (callback) {
+//				//console.log(callback[0].elo);
+//				//console.log(i);
+//				var pointElo = callback[0].elo;
+//				pointsElo.push(pointElo);
+//				
+//			}
+//		}
+//	});
+//}
+// ================= USE ========================
+
 for (var i = 0; i < id_women.length; i++) {
-	var id = id_women[i];
-	getValueFormID(id, function(err, callback) {
-		if (err) {
-			console.error('Error!', err);
-		} else {
-			if (callback) {
-				//console.log(callback[0].elo);
-				//console.log(i);
-				var pointElo = callback[0].elo;
-				pointsElo.push(pointElo);
-				
-			}
-		}
-	});
+	idWoman = id_women[i];
+	//insertValue([idWoman, 1500, 0, 0]);
+	//console.log('idWoman : ' + idWoman);
 }
 
 setTimeout(function() {
